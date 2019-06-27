@@ -282,15 +282,9 @@ brew install ponyc
 
 ## Windows using ZIP (via Bintray)
 
-Windows users will need to install:
+Windows users will need to install [Visual Studio 2019](https://visualstudio.microsoft.com/downloads) or the [Visual Studio 2019 Build Tools](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2019).  Make sure the "C++ build tools" workload is installed.
 
-- Visual Studio 2019, 2017 or 2015 (available [here](https://www.visualstudio.com/vs/community/)) or the Visual C++ Build Tools 2019, 2017 or 2015 (available [here](https://visualstudio.microsoft.com/visual-cpp-build-tools/)), and
-  - If using Visual Studio 2015, install the Windows 10 SDK (available [here](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk)).
-  - If using Visual Studio 2017 or 2019, install the "Desktop Development with C++" workload.
-  - If using Visual C++ Build Tools 2017 or 2019, install the "Visual C++ build tools" workload, and the "Visual Studio C++ core features" individual component.
-  - If using Visual Studio 2017 or 2019, or Visual C++ Build Tools 2017 or 2019, make sure the latest `Windows 10 SDK (10.x.x.x) for Desktop` will be installed.
-
-Once you have installed the prerequisites, you can download the latest ponyc release from [bintray](https://dl.bintray.com/pony-language/ponyc-win/).
+You can download the latest ponyc release from [bintray](https://dl.bintray.com/pony-language/ponyc-win/).
 
 # Building ponyc from source
 
@@ -717,41 +711,38 @@ make
 ## Building on Windows
 Building on Windows requires the following:
 
-- Visual Studio 2019, 2017 or 2015 (available [here](https://www.visualstudio.com/vs/community/)) or the Visual C++ Build Tools 2019, 2017 or 2015 (available [here](https://visualstudio.microsoft.com/visual-cpp-build-tools/)), and
-  - If using Visual Studio 2015, install the Windows 10 SDK (available [here](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk)).
-  - If using Visual Studio 2017 or 2019, install the "Desktop Development with C++" workload.
-  - If using Visual C++ Build Tools 2017 or 2019, install the "Visual C++ build tools" workload, and the "Visual Studio C++ core features" individual component.
-  - If using Visual Studio 2017 or 2019, or Visual C++ Build Tools 2017 or 2019, make sure the latest `Windows 10 SDK (10.x.x.x) for Desktop` will be installed.
-- [Python](https://www.python.org/downloads) (3.6 or 2.7) needs to be in your PATH.
+- [CMake](https://cmake.org/download/) 3.15.0 or higher.
+- [Python](https://www.python.org/downloads/windows/) 2 or 3.
+- [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/) or the [Visual Studio 2019 Build Tools](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2019).  Make sure the "C++ build tools" workload is installed.
 
-In a command prompt in the `ponyc` source directory, run the following:
+### Build Libraries
 
-```
-make.bat configure
-```
+The first time you clone the PonyC repository, run `make.ps1 libs` (in PowerShell) or `powershell make.ps1 libs` (in cmd.exe).  This will build LLVM and other required libraries.  This may take an hour or two, but you only have to do it once.
 
-(You only need to run `make.bat configure` the first time you build the project.)
+### Configure
 
-```
-make.bat build test
-```
+When the libraries are built successfully, run `make.ps1 configure -Config Release` (or `-Config Debug` for a debug build).  This will generate a Visual Studio solution file `build\build\PonyC.sln`, which you can use to build PonyC.  Do not add or remove source files via Visual Studio; you need to update the appropriate `CMakeLists.txt` file and re-run `make.ps1 configure` to regenerate the Visual Studio project files.
 
-This will automatically perform the following steps:
+Or you can run `make.ps1 build -Config Release` to build PonyC without opening Visual Studio.
 
-- Download the pre-built LLVM library for building the Pony compiler.
-  - [LLVM](http://llvm.org)
-- Build the pony compiler in the `build/<config>-<llvm-version>` directory.
-- Build the unit tests for the compiler and the standard library.
-- Run the unit tests.
+### Test
 
-You can provide the following options to `make.bat` when running the `build` or `test` commands:
+Run `make.ps1 test -Config Release` to run the test suite.
 
-- `--config debug|release`: whether or not to build a debug or release build (`release` is the default).
-- `--llvm <version>`: the LLVM version to build against (`3.9.1` is the default).
+### All Commands and Options
 
-Note that you need to provide these options each time you run make.bat; the system will not remember your last choice.
+You can use the following commands with `make.ps1`:
 
-Other commands include `clean`, which will clean a specified configuration; and `distclean`, which will wipe out the entire build directory.  You will need to run `make configure` after a distclean.
+- `libs`: build LLVM and other required libraries.
+- `configure`: configure the PonyC build.  You can use the following options:
+  - `-Config (Release|Debug|RelWithDebInfo|MinSizeRel)`: which build configuration to generate (if you are using a generator other than Visual Studio).  Defaults to `Release`.
+  - `-Generator "<gen>"`: which build file generator to use (run `cmake --help` to see a list of available generators).  Defaults to the default CMake generator.
+  - `-InstallPath <path>`: the install path to use when running `make.ps1 install`.  Defaults to `build\install\$Config`.
+- `build`: builds PonyC.  Use `-Config` to specify the build to use.  Resulting binaries will be in the `build\$Config` directory.
+- `clean`: deletes the output directory for the given config.  Use `-Config` to specify the config to clean.
+- `distclean`: deletes the entire `build` directory, **including the libraries**.  You will need to re-run `make.ps1 libs` after this.
+- `test`: runs a test suite.  Use `-Config` to specify which build to use.
+- `install`: installs to the directory specified when running `make.ps1 configure`.  Use `-Config` to specify which build to use.
 
 ## Building with link-time optimisation (LTO)
 

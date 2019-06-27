@@ -17,8 +17,11 @@ RUN apt-get update \
  && apt-get -y clean \
  && pip install cloudsmith-cli
 
-# add user pony in order to not run tests as root
+# install a newer cmake
+RUN curl --output cmake-3.15.3-Linux-x86_64.sh https://cmake.org/files/v3.15/cmake-3.15.3-Linux-x86_64.sh \
+ && sh cmake-3.15.3-Linux-x86_64.sh --prefix=/usr/local --exclude-subdir
 
+# add user pony in order to not run tests as root
 RUN useradd -ms /bin/bash -d /home/pony -g root pony
 USER pony
 WORKDIR /home/pony
