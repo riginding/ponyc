@@ -46,11 +46,11 @@ public:
   {
 #if PONY_LLVM < 900
     _es.getMainJITDylib().setGenerator(
-#if PONY_LLVM < 900
       cantFail(DynamicLibrarySearchGenerator::GetForCurrentProcess(_dl)));
 #else
     _es.getMainJITDylib().setGenerator(
-      cantFail(DynamicLibrarySearchGenerator::GetForCurrentProcess(_dl.getGlobalPrefix())));
+      cantFail(DynamicLibrarySearchGenerator::GetForCurrentProcess(
+        _dl.getGlobalPrefix())));
 #endif
 
 #if (PONY_LLVM >= 800) && defined(PLATFORM_IS_WINDOWS)
