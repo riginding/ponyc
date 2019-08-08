@@ -49,6 +49,7 @@ MSVC_VERSIONS = [ '16.0', '15.9', '15.8', '15.7', '15.6', '15.4', '15.0', '14.0'
 
 # keep these in sync with the list in .appveyor.yml
 LLVM_VERSIONS = [
+    '9.0.0',
     '7.0.1',
     '6.0.1',
     '3.9.1',

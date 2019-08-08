@@ -135,8 +135,10 @@ LLVMValueRef LLVMDIBuilderInsertDeclare(LLVMDIBuilderRef d,
   LLVMValueRef value, LLVMMetadataRef info, LLVMMetadataRef expr,
   unsigned line, unsigned col, LLVMMetadataRef scope, LLVMBasicBlockRef block);
 
+#if PONY_LLVM < 900
 void LLVMSetCurrentDebugLocation2(LLVMBuilderRef b,
   unsigned line, unsigned col, LLVMMetadataRef scope);
+#endif
 
 PONY_EXTERN_C_END
 

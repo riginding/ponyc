@@ -1019,7 +1019,11 @@ void codegen_startfun(compile_t* c, LLVMValueRef fun, LLVMMetadataRef file,
     LLVMPositionBuilderAtEnd(c->builder, block);
   }
 
+#if PONY_LLVM < 900
   LLVMSetCurrentDebugLocation2(c->builder, 0, 0, NULL);
+#else
+  LLVMSetCurrentDebugLocation2(c->builder, NULL);
+#endif
 }
 
 void codegen_finishfun(compile_t* c)
@@ -1177,10 +1181,21 @@ void codegen_debugloc(compile_t* c, ast_t* ast)
 {
   if(ast != NULL)
   {
+#if PONY_LLVM < 900
     LLVMSetCurrentDebugLocation2(c->builder,
       (unsigned)ast_line(ast), (unsigned)ast_pos(ast), c->frame->di_scope);
+#else
+    LLVMMetadataRef loc = LLVMDIBuilderCreateDebugLocation(c->context,
+      (unsigned)ast_line(ast), (unsigned)ast_pos(ast), c->frame->di_scope,
+      NULL);
+    LLVMSetCurrentDebugLocation2(c->builder, loc);
+#endif
   } else {
+#if PONY_LLVM < 900
     LLVMSetCurrentDebugLocation2(c->builder, 0, 0, NULL);
+#else
+    LLVMSetCurrentDebugLocation2(c->builder, NULL);
+#endif
   }
 }
 

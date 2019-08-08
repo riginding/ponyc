@@ -209,7 +209,12 @@ public:
     CallGraphNode *cg_node = cg ? (*cg)[&f] : nullptr;
     if (cg_node)
     {
+#if PONY_LLVM < 900
       cg_node->removeCallEdgeFor(call);
+#else
+      CallInst *callInst = cast<CallInst>(call.getInstruction());
+      cg_node->removeCallEdgeFor(*callInst);
+#endif
     }
 #endif
     inst->eraseFromParent();
