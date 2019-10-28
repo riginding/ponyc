@@ -1179,7 +1179,7 @@ void codegen_poptry(compile_t* c)
 
 void codegen_debugloc(compile_t* c, ast_t* ast)
 {
-  if(ast != NULL)
+  if (ast != NULL && c->frame->di_scope != NULL)
   {
 #if PONY_LLVM < 900
     LLVMSetCurrentDebugLocation2(c->builder,
@@ -1194,9 +1194,7 @@ void codegen_debugloc(compile_t* c, ast_t* ast)
 #if PONY_LLVM < 900
     LLVMSetCurrentDebugLocation2(c->builder, 0, 0, NULL);
 #else
-    LLVMMetadataRef loc = LLVMDIBuilderCreateDebugLocation(c->context, 0, 0,
-      c->frame->di_scope, NULL);
-    LLVMSetCurrentDebugLocation2(c->builder, loc);
+    LLVMSetCurrentDebugLocation2(c->builder, NULL);
 #endif
   }
 }
