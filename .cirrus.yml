@@ -6,11 +6,11 @@ task:
   install_script:
     - echo "FETCH_RETRY = 6" >> /usr/local/etc/pkg.conf
     - pkg update
-    - pkg install -y gmake libunwind llvm70 git
+    - pkg install -y gmake libunwind llvm90 git
 
   test_script:
-    - LLVM_CONFIG=llvm-config70 gmake all config=release -j3
-    - LLVM_CONFIG=llvm-config70 gmake test-ci config=release
+    - LLVM_CONFIG=llvm-config90 gmake all config=release -j3
+    - LLVM_CONFIG=llvm-config90 gmake test-ci config=release
 
 task:
   freebsd_instance:
@@ -23,11 +23,11 @@ task:
   install_script:
     - echo "FETCH_RETRY = 6" >> /usr/local/etc/pkg.conf
     - pkg update
-    - pkg install -y gmake libunwind llvm70 git
+    - pkg install -y gmake libunwind llvm90 git
 
   test_script:
-    - LLVM_CONFIG=llvm-config70 gmake all config=debug -j3
-    - LLVM_CONFIG=llvm-config70 gmake test-ci config=debug
+    - LLVM_CONFIG=llvm-config90 gmake all config=debug -j3
+    - LLVM_CONFIG=llvm-config90 gmake test-ci config=debug
 
 task:
   osx_instance:
@@ -39,14 +39,14 @@ task:
     - curl -o macports.pkg https://distfiles.macports.org/MacPorts/MacPorts-2.6.0-10.14-Mojave.pkg
     - sudo installer -verbose -pkg macports.pkg -target /
     - sudo /opt/local/bin/port selfupdate
-    - sudo /opt/local/bin/port install llvm-7.0
+    - sudo /opt/local/bin/port install llvm-9.0
 
   test_script:
     - export LDFLAGS="-L/opt/local/lib"
     - export PATH=/usr/local/opt/llvm/bin/:$PATH
     - export CC1=clang
     - export CXX1=clang++
-    - export LLVM_CONFIG=/opt/local/bin/llvm-config-mp-7.0
+    - export LLVM_CONFIG=/opt/local/bin/llvm-config-mp-9.0
     - make LLVM_CONFIG="$LLVM_CONFIG" CC="$CC1" CXX="$CXX1" -j$(sysctl -n hw.ncpu) config=release all
     - make LLVM_CONFIG="$LLVM_CONFIG" CC="$CC1" CXX="$CXX1" config=release test-ci
 
@@ -62,13 +62,13 @@ task:
     - curl -o macports.pkg https://distfiles.macports.org/MacPorts/MacPorts-2.6.0-10.14-Mojave.pkg
     - sudo installer -verbose -pkg macports.pkg -target /
     - sudo /opt/local/bin/port selfupdate
-    - sudo /opt/local/bin/port install llvm-7.0
+    - sudo /opt/local/bin/port install llvm-9.0
 
   test_script:
     - export LDFLAGS="-L/opt/local/lib"
     - export PATH=/usr/local/opt/llvm/bin/:$PATH
     - export CC1=clang
     - export CXX1=clang++
-    - export LLVM_CONFIG=/opt/local/bin/llvm-config-mp-7.0
+    - export LLVM_CONFIG=/opt/local/bin/llvm-config-mp-9.0
     - make LLVM_CONFIG="$LLVM_CONFIG" CC="$CC1" CXX="$CXX1" -j$(sysctl -n hw.ncpu) config=debug all
     - make LLVM_CONFIG="$LLVM_CONFIG" CC="$CC1" CXX="$CXX1" config=debug test-ci

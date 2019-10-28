@@ -82,8 +82,8 @@ matrix:
     env:
     - DOCKER_ARCH=aarch64
     - CROSS_ARCH=armv8-a
-    - LLVM_VERSION="6.0.0"
-    - LLVM_CONFIG="llvm-config-6.0"
+    - LLVM_VERSION="9.0.0"
+    - LLVM_CONFIG="llvm-config-9.0"
     - config=debug
     - CROSS_CFLAGS='-idirafter /usr/cross/include/'
     - CROSS_CXXFLAGS='-idirafter /usr/cross/include/'
@@ -99,8 +99,8 @@ matrix:
     env:
     - DOCKER_ARCH=aarch64
     - CROSS_ARCH=armv8-a
-    - LLVM_VERSION="6.0.0"
-    - LLVM_CONFIG="llvm-config-6.0"
+    - LLVM_VERSION="9.0.0"
+    - LLVM_CONFIG="llvm-config-9.0"
     - config=release
     - CROSS_CFLAGS='-idirafter /usr/cross/include/'
     - CROSS_CXXFLAGS='-idirafter /usr/cross/include/'
@@ -149,8 +149,8 @@ matrix:
     env:
     - DOCKER_ARCH=aarch64
     - CROSS_ARCH=armv8-a
-    - LLVM_VERSION="6.0.0"
-    - LLVM_CONFIG="llvm-config-6.0"
+    - LLVM_VERSION="9.0.0"
+    - LLVM_CONFIG="llvm-config-9.0"
     - config=debug
     - CROSS_CFLAGS='-idirafter /usr/cross/include/'
     - CROSS_CXXFLAGS='-idirafter /usr/cross/include/'
@@ -166,8 +166,8 @@ matrix:
     env:
     - DOCKER_ARCH=aarch64
     - CROSS_ARCH=armv8-a
-    - LLVM_VERSION="6.0.0"
-    - LLVM_CONFIG="llvm-config-6.0"
+    - LLVM_VERSION="9.0.0"
+    - LLVM_CONFIG="llvm-config-9.0"
     - config=release
     - CROSS_CFLAGS='-idirafter /usr/cross/include/'
     - CROSS_CXXFLAGS='-idirafter /usr/cross/include/'

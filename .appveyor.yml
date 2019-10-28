@@ -69,7 +69,7 @@ artifacts:
   - path: 'ponyc-*.zip'
 
 deploy:
-  # On branche `release`, deploy (and publish) artifacts
+  # On branch `release`, deploy (and publish) artifacts
   # to the ponyc-win projects on Bintray.
   - provider: BinTray
     username: pony-buildbot-2
