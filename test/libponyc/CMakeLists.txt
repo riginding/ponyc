@@ -94,14 +94,23 @@ if (MSVC)
     set_property(TARGET libponyc.tests PROPERTY LINK_LIBRARIES ${TARGET_LIBRARIES})
     set_property(TARGET libponyc.tests PROPERTY LINK_OPTIONS "/WHOLEARCHIVE:libponyrt.lib")
 else()
-    target_link_libraries(libponyc.tests PRIVATE
-        -Wl,--whole-archive
-        libponyrt
-        -Wl,--no-whole-archive
-        libponyc
-        blake2
-        GTest::gtest
-    )
+    if(${CMAKE_HOST_SYSTEM_NAME} MATCHES "Darwin")
+        target_link_libraries(libponyc.tests PRIVATE
+            -Wl,-force_load,libponyrt.a
+            libponyc
+            blake2
+            GTest::gtest
+        )
+    else()
+        target_link_libraries(libponyc.tests PRIVATE
+            -Wl,--whole-archive
+            libponyrt
+            -Wl,--no-whole-archive
+            libponyc
+            blake2
+            GTest::gtest
+        )
+    endif()
 
     llvm_config(libponyc.tests all)
 

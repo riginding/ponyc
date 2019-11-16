@@ -124,10 +124,10 @@ task:
 
   configure_script:
     - make configure
-  # build_script:
-  #   - make build flags=-j8
-  # test_script:
-  #   - make test-ci
+  build_script:
+    - make build flags=-j8
+  test_script:
+    - make test-ci
 
   only_if: $CIRRUS_BRANCH != 'master' && $CIRRUS_BRANCH != 'release' && $CIRRUS_API_CREATED != "true"
 
@@ -147,10 +147,10 @@ task:
 
   config_script:
     - powershell.exe -NoLogo -File .\make.ps1 configure -Config Release -Generator "Visual Studio 16 2019" -InstallPath "build\install\release"
-  # build_script:
-  #   - powershell.exe -NoLogo -File .\make.ps1 build -Config Release -Generator "Visual Studio 16 2019" -InstallPath "build\install\release"
-  # test_script:
-  #   - powershell.exe -NoLogo -File .\make.ps1 test -Config Release -Generator "Visual Studio 16 2019" -InstallPath "build\install\release"
+  build_script:
+    - powershell.exe -NoLogo -File .\make.ps1 build -Config Release -Generator "Visual Studio 16 2019" -InstallPath "build\install\release"
+  test_script:
+    - powershell.exe -NoLogo -File .\make.ps1 test -Config Release -Generator "Visual Studio 16 2019" -InstallPath "build\install\release"
 
     # install_script: powershell.exe -NoLogo -File .\make.ps1 install -Config Release -InstallPath "build\install\release"
   # package_script: powershell.exe -NoLogo -File .\make.ps1 package -Config Release -InstallPath "build\install\release" -Version date
