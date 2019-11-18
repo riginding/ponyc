@@ -48,10 +48,13 @@ else()
     llvm_config(ponyc all)
 
     if(${CMAKE_HOST_SYSTEM_NAME} MATCHES "Darwin")
+        set(LIBPONYRT_ARCHIVE libponyrt.a)
         target_link_libraries(ponyc PRIVATE dl)
     elseif(${CMAKE_HOST_SYSTEM_NAME} MATCHES "BSD")
+        set(LIBPONYRT_ARCHIVE libponyrt.a)
         target_link_libraries(ponyc PRIVATE execinfo)
     else()
+        set(LIBPONYRT_ARCHIVE libponyrt-pic.a)
         target_link_libraries(ponyc PRIVATE atomic dl)
         target_link_options(ponyc PRIVATE "-static-libstdc++")
     endif()
@@ -62,9 +65,9 @@ else()
 
     # copy libponyrt to the ponyc directory for use when linking pony programs
     add_custom_command(TARGET ponyc POST_BUILD
-        COMMAND $<$<CONFIG:Debug>:${CMAKE_COMMAND}> ARGS -E copy ${libponyrt_BINARY_DIR}/libponyrt.a ${CMAKE_BINARY_DIR}/../debug/libponyrt-pic.a
-        COMMAND $<$<CONFIG:Release>:${CMAKE_COMMAND}> ARGS -E copy ${libponyrt_BINARY_DIR}/libponyrt.a ${CMAKE_BINARY_DIR}/../release/libponyrt-pic.a
-        COMMAND $<$<CONFIG:RelWithDebInfo>:${CMAKE_COMMAND}> ARGS -E copy ${libponyrt_BINARY_DIR}/libponyrt.a ${CMAKE_BINARY_DIR}/../relwithdebinfo/libponyrt-pic.a
-        COMMAND $<$<CONFIG:MinSizeRel>:${CMAKE_COMMAND}> ARGS -E copy ${libponyrt_BINARY_DIR}/minsizerel/libponyrt.a ${CMAKE_BINARY_DIR}/../minsizerel/libponyrt-pic.a
-    )
+        COMMAND $<$<CONFIG:Debug>:${CMAKE_COMMAND}> ARGS -E copy ${libponyrt_BINARY_DIR}/libponyrt.a ${CMAKE_BINARY_DIR}/../debug/${LIBPONYRT_ARCHIVE}
+        COMMAND $<$<CONFIG:Release>:${CMAKE_COMMAND}> ARGS -E copy ${libponyrt_BINARY_DIR}/libponyrt.a ${CMAKE_BINARY_DIR}/../release/${LIBPONYRT_ARCHIVE}
+        COMMAND $<$<CONFIG:RelWithDebInfo>:${CMAKE_COMMAND}> ARGS -E copy ${libponyrt_BINARY_DIR}/libponyrt.a ${CMAKE_BINARY_DIR}/../relwithdebinfo/${LIBPONYRT_ARCHIVE}
+        COMMAND $<$<CONFIG:MinSizeRel>:${CMAKE_COMMAND}> ARGS -E copy ${libponyrt_BINARY_DIR}/minsizerel/libponyrt.a ${CMAKE_BINARY_DIR}/../minsizerel/${LIBPONYRT_ARCHIVE}
+    )    
 endif (MSVC)

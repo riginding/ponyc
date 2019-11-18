@@ -64,4 +64,8 @@ target_include_directories(libponyrt
 if (MSVC)
     file(GLOB_RECURSE CFILES "${PROJECT_SOURCE_DIR}/*.c")
     set_source_files_properties(${CFILES} PROPERTIES LANGUAGE CXX)
+else()
+    target_include_directories(libponyrt
+        PRIVATE /usr/local/include
+    )
 endif (MSVC)

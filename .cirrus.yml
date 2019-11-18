@@ -101,10 +101,10 @@ task:
 
   configure_script:
     - gmake configure
-  # build_script:
-  #   - gmake build flags=-j8
-  # test_script:
-  #   - gmake test-ci
+  build_script:
+    - gmake build flags=-j8
+  test_script:
+    - gmake test-ci
 
   only_if: $CIRRUS_BRANCH != 'master' && $CIRRUS_BRANCH != 'release' && $CIRRUS_API_CREATED != "true"
 
@@ -124,10 +124,10 @@ task:
 
   configure_script:
     - make configure
-  # build_script:
-  #   - make build flags=-j8
-  # test_script:
-  #   - make test-ci
+  build_script:
+    - make build flags=-j8
+  test_script:
+    - make test-ci
 
   only_if: $CIRRUS_BRANCH != 'master' && $CIRRUS_BRANCH != 'release' && $CIRRUS_API_CREATED != "true"
 

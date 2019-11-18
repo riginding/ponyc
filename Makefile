@@ -46,10 +46,10 @@ test-core: all
 	$(SILENT)cd $(outDir) && ./libponyc.tests --gtest_shuffle
 
 test-stdlib-release: all
-	$(SILENT)cd $(outDir) && ./ponyc -b stdlib-release -pic --checktree --verify ../../packages/stdlib && ./stdlib-release && rm stdlib-release
+	$(SILENT)cd $(outDir) && ./ponyc -b stdlib-release --pic --checktree --verify ../../packages/stdlib && ./stdlib-release && rm stdlib-release
 
 test-stdlib-debug: all
-	$(SILENT)cd $(outDir) && ./ponyc -d -b stdlib-debug -pic -s --checktree --verify ../../packages/stdlib && ./stdlib-debug && rm stdlib-debug
+	$(SILENT)cd $(outDir) && ./ponyc -d -b stdlib-debug --pic --strip --checktree --verify ../../packages/stdlib && ./stdlib-debug && rm stdlib-debug
 
 test-examples: all
 	$(SILENT)cd $(outDir) && PONYPATH=.:$(PONYPATH) find ../../examples/*/* -name '*.pony' -print | xargs -n 1 dirname | sort -u | grep -v ffi- | xargs -n 1 -I {} ./ponyc -d -s --checktree -o {} {}
