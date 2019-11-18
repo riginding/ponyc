@@ -47,6 +47,7 @@ else()
 
     llvm_config(ponyc all)
 
+    message(${CMAKE_HOST_SYSTEM_NAME})
     if(${CMAKE_HOST_SYSTEM_NAME} MATCHES "Darwin")
         set(LIBPONYRT_ARCHIVE libponyrt.a)
         target_link_libraries(ponyc PRIVATE dl)
@@ -64,10 +65,11 @@ else()
     endif()
 
     # copy libponyrt to the ponyc directory for use when linking pony programs
+    message(${LIBPONYRT_ARCHIVE})
     add_custom_command(TARGET ponyc POST_BUILD
         COMMAND $<$<CONFIG:Debug>:${CMAKE_COMMAND}> ARGS -E copy ${libponyrt_BINARY_DIR}/libponyrt.a ${CMAKE_BINARY_DIR}/../debug/${LIBPONYRT_ARCHIVE}
         COMMAND $<$<CONFIG:Release>:${CMAKE_COMMAND}> ARGS -E copy ${libponyrt_BINARY_DIR}/libponyrt.a ${CMAKE_BINARY_DIR}/../release/${LIBPONYRT_ARCHIVE}
         COMMAND $<$<CONFIG:RelWithDebInfo>:${CMAKE_COMMAND}> ARGS -E copy ${libponyrt_BINARY_DIR}/libponyrt.a ${CMAKE_BINARY_DIR}/../relwithdebinfo/${LIBPONYRT_ARCHIVE}
         COMMAND $<$<CONFIG:MinSizeRel>:${CMAKE_COMMAND}> ARGS -E copy ${libponyrt_BINARY_DIR}/minsizerel/libponyrt.a ${CMAKE_BINARY_DIR}/../minsizerel/${LIBPONYRT_ARCHIVE}
-    )    
+    )
 endif (MSVC)
