@@ -30,14 +30,6 @@ if (MSVC)
     get_target_property(TARGET_LIBRARIES ponyc LINK_LIBRARIES)
     LIST(REMOVE_ITEM TARGET_LIBRARIES LTO)
     set_property(TARGET ponyc PROPERTY LINK_LIBRARIES ${TARGET_LIBRARIES})
-
-    # copy libponyrt to the ponyc directory for use when linking pony programs
-    add_custom_command(TARGET ponyc POST_BUILD
-        COMMAND $<$<CONFIG:Debug>:${CMAKE_COMMAND}> ARGS -E copy ${libponyrt_BINARY_DIR}/debug/libponyrt.lib ${CMAKE_BINARY_DIR}/../debug/libponyrt.lib
-        COMMAND $<$<CONFIG:Release>:${CMAKE_COMMAND}> ARGS -E copy ${libponyrt_BINARY_DIR}/release/libponyrt.lib ${CMAKE_BINARY_DIR}/../release/libponyrt.lib
-        COMMAND $<$<CONFIG:RelWithDebInfo>:${CMAKE_COMMAND}> ARGS -E copy ${libponyrt_BINARY_DIR}/relwithdebinfo/libponyrt.lib ${CMAKE_BINARY_DIR}/../relwithdebinfo/libponyrt.lib
-        COMMAND $<$<CONFIG:MinSizeRel>:${CMAKE_COMMAND}> ARGS -E copy ${libponyrt_BINARY_DIR}/minsizerel/libponyrt.lib ${CMAKE_BINARY_DIR}/../minsizerel/libponyrt.lib
-    )
 else()
     target_link_libraries(ponyc PRIVATE
         libponyc
@@ -63,13 +55,4 @@ else()
     if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         target_link_options(ponyc PRIVATE "-static-libgcc")
     endif()
-
-    # copy libponyrt to the ponyc directory for use when linking pony programs
-    message(${LIBPONYRT_ARCHIVE})
-    add_custom_command(TARGET ponyc POST_BUILD
-        COMMAND $<$<CONFIG:Debug>:${CMAKE_COMMAND}> ARGS -E copy ${libponyrt_BINARY_DIR}/libponyrt.a ${CMAKE_BINARY_DIR}/../debug/${LIBPONYRT_ARCHIVE}
-        COMMAND $<$<CONFIG:Release>:${CMAKE_COMMAND}> ARGS -E copy ${libponyrt_BINARY_DIR}/libponyrt.a ${CMAKE_BINARY_DIR}/../release/${LIBPONYRT_ARCHIVE}
-        COMMAND $<$<CONFIG:RelWithDebInfo>:${CMAKE_COMMAND}> ARGS -E copy ${libponyrt_BINARY_DIR}/libponyrt.a ${CMAKE_BINARY_DIR}/../relwithdebinfo/${LIBPONYRT_ARCHIVE}
-        COMMAND $<$<CONFIG:MinSizeRel>:${CMAKE_COMMAND}> ARGS -E copy ${libponyrt_BINARY_DIR}/minsizerel/libponyrt.a ${CMAKE_BINARY_DIR}/../minsizerel/${LIBPONYRT_ARCHIVE}
-    )
 endif (MSVC)

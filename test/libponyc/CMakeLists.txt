@@ -96,7 +96,7 @@ if (MSVC)
 else()
     if(${CMAKE_HOST_SYSTEM_NAME} MATCHES "Darwin")
         target_link_libraries(libponyc.tests PRIVATE
-            -Wl,-force_load,libponyrt.a
+            -Wl,-force_load,../../src/libponyrt/libponyrt.a
             libponyc
             blake2
             GTest::gtest
