@@ -77,6 +77,14 @@ else()
         PRIVATE /usr/local/include
     )
 
+    if(${CMAKE_HOST_SYSTEM_NAME} MATCHES "Darwin")
+        set(LIBPONYRT_ARCHIVE libponyrt.a)
+    elseif(${CMAKE_HOST_SYSTEM_NAME} MATCHES "BSD")
+        set(LIBPONYRT_ARCHIVE libponyrt.a)
+    else()
+        set(LIBPONYRT_ARCHIVE libponyrt-pic.a)
+    endif()
+
     # copy libponyrt to the ponyc directory for use when linking pony programs
     add_custom_command(TARGET libponyrt POST_BUILD
         COMMAND $<$<CONFIG:Debug>:${CMAKE_COMMAND}> ARGS -E copy ${libponyrt_BINARY_DIR}/libponyrt.a ${CMAKE_BINARY_DIR}/../debug/${LIBPONYRT_ARCHIVE}
